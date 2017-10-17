@@ -44,20 +44,25 @@ namespace ConsoleApplication5.library
             {
                 if (token == "!GENREM")
                 {
-                    line = @"{\rtlch\fcs1 \af1\afs20 \ltrch\fcs0 \f1\fs20\cf2 }";
+                    line = deleteLine();
                     outputFile.WriteLine(line);
 
                     return;
                 }
                 line = placeHolder.Replace(line, outputValue);
                 outputFile.WriteLine(line);
-                
-                
+                              
             }
 
         }
 
-        internal void writeLine(string line)
+        public string deleteLine()
+        {
+            return @"{\rtlch\fcs1 \af1\afs20 \ltrch\fcs0 \f1\fs20\cf2 }";
+        }
+
+
+        public void writeLine(string line)
         {
             outputFile.WriteLine(line);
         }
