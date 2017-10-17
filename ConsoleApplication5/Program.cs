@@ -13,15 +13,31 @@ namespace ConsoleApplication5
 
         static void Main(string[] args)
         {
-            string inputPath = @"E:\ETG\HE\test.rtf";
-            string outputPath = @"E:\ETG\HE\test_output.rtf";
+            string inputPath = @"D:\TFS\HE\test.rtf";
+            string outputPath = @"D:\TFS\HE\test_output.rtf";
         
             RTF_Handler my_rtf = new RTF_Handler(inputPath, outputPath);
 
-            while((line = my_rtf.getLine()) != null)
+           
+
+
+
+            while ((line = my_rtf.getLine()) != null)
             {
-                my_rtf.replaceValues("!GENREM", line, "TEST");
+                if (my_rtf.isValid(line, "!"))
+                {
+                     my_rtf.replaceValues("!GENREM", line, "TEST");
+                     my_rtf.replaceValues("!OFFWAR", line, "DUPA");
+                     my_rtf.replaceValues("!ADRANR", line, "ADRES_SPOTTED!");
+                    
+                    my_rtf.replaceValues("!GENNXT", line, "GENNXT_SPOTTED!");
+                }
+                else
+                {   
+                    my_rtf.writeLine(line);
+                }
             }
+
             my_rtf.close();
         }
     }

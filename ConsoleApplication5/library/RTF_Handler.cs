@@ -13,6 +13,7 @@ namespace ConsoleApplication5.library
         private StreamReader inputFile;
         private StreamWriter outputFile;
         private Regex placeHolder;
+        
 
         public RTF_Handler(string input, string output)
         {
@@ -20,19 +21,45 @@ namespace ConsoleApplication5.library
             outputFile = new StreamWriter(output);
         }
 
+        public bool isValid(string line, string checkChar)
+        {
+            Regex tokenMark = new Regex(checkChar);
+
+            if (tokenMark.IsMatch(line))
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+
         public void replaceValues(string token, string line, string outputValue)
         {
+            
             placeHolder = new Regex(token);
 
-            if (token == "!GENREM" && placeHolder.IsMatch(line))
+            if (placeHolder.IsMatch(line))
             {
-                line = @"{\rtlch\fcs1 \af1\afs20 \ltrch\fcs0 \f1\fs20\cf2 }";
-                outputFile.WriteLine(line);
-                return;
-            }
-            placeHolder.Replace(line, outputValue);
-            outputFile.WriteLine(line);
+                if (token == "!GENREM")
+                {
+                    line = @"{\rtlch\fcs1 \af1\afs20 \ltrch\fcs0 \f1\fs20\cf2 }";
+                    outputFile.WriteLine(line);
 
+                    return;
+                }
+                line = placeHolder.Replace(line, outputValue);
+                outputFile.WriteLine(line);
+                
+                
+            }
+
+        }
+
+        internal void writeLine(string line)
+        {
+            outputFile.WriteLine(line);
         }
 
         public string  getLine()
@@ -59,5 +86,12 @@ namespace ConsoleApplication5.library
                 return false;
             }
         }
+
+
+        public bool paginate()
+            {
+            outputFile.WriteLine(@"{\page }");
+            return true;
+            }
     }
 }
