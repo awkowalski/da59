@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ConsoleApplication5.library;
+using System.Text.RegularExpressions;
 
 namespace ConsoleApplication5
 {
@@ -20,6 +21,7 @@ namespace ConsoleApplication5
 
 
             Console.WriteLine(my_rtf.getInputFile());
+            Console.WriteLine(Regex.Matches("test, test, !test, !test", "!").Count);
             Console.ReadLine();
 
             //while ((line = my_rtf.getLine()) != null)

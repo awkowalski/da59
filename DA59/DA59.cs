@@ -19,6 +19,7 @@ namespace DA59 {
         bool setOutputFile(string outputPath);
         string getInputFilePath();
         string getOutputFilePath();
+        int getPlaceHolderCounter();
         bool isValid(string line, string checkChar);
         bool replaceValues(string token, string line, string outputValue);
         void deleteLine();
@@ -27,17 +28,19 @@ namespace DA59 {
         bool close();
         bool paginate();
         bool hasNext();
+
     }
     [Guid("fac7c082-2d7c-4508-82f8-51df3e54f1ee")]
     [ComVisible(true)]
     public class DA59 : IDA59
     {
              
-            public StreamReader inputFile;
-            public StreamWriter outputFile;
-            public Regex placeHolder;
-            public string inputFilePath;
-            public string outputFilePath;
+        public StreamReader inputFile;
+        public StreamWriter outputFile;
+        public Regex placeHolder;
+        public string inputFilePath;
+        public string outputFilePath;
+        public int placeHolderCounter;
 
             public DA59() { } 
             public DA59(string input, string output)
@@ -81,6 +84,11 @@ namespace DA59 {
         {
             return outputFilePath;
         }
+
+        public int getPlaceHolderCounter()
+        {
+            return placeHolderCounter;
+        }
         
             public bool isValid(string line, string checkChar)
             {
@@ -88,6 +96,7 @@ namespace DA59 {
 
                 if (tokenMark.IsMatch(line))
                 {
+                placeHolderCounter = tokenMark.Matches(line).Count;
                     return true;
                 }
                 else
