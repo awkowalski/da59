@@ -98,5 +98,9 @@ namespace ConsoleApplication5.library
             outputFile.WriteLine(@"{\page }");
             return true;
             }
+
+        public string getInputFile() {
+            return inputFile.ToString();
+        }
     }
 }
