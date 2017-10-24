@@ -21,7 +21,7 @@ namespace DA59 {
         string getOutputFilePath();
         int getPlaceHolderCounter();
         bool isValid(string line, string checkChar);
-        bool replaceValues(string token, string line, string outputValue);
+        string replaceValues(string token, string line, string outputValue);
         void deleteLine();
         void writeLine(string line);
         string getLine();
@@ -87,7 +87,7 @@ namespace DA59 {
 
         public int getPlaceHolderCounter()
         {
-            return placeHolderCounter;
+            return placeHolderCounter; //this function should contain code not only for returning valu but also for updating it, so it should receive string parameter with line and regex
         }
         
             public bool isValid(string line, string checkChar)
@@ -105,7 +105,7 @@ namespace DA59 {
                 }
             }
         
-            public bool replaceValues(string token, string line, string outputValue)
+            public string replaceValues(string token, string line, string outputValue)
             {
 
                 placeHolder = new Regex(token);
@@ -126,12 +126,12 @@ namespace DA59 {
 
                     //return true;
                 }
-                outputFile.WriteLine(line);
-                return true;
+                //outputFile.WriteLine(line);
+                return line;
             }
             catch (Exception)
             {
-                return false;
+                return line;
             }
             }
 
