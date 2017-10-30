@@ -19,10 +19,10 @@ namespace DA59 {
         bool setOutputFile(string outputPath);
         string getInputFilePath();
         string getOutputFilePath();
-        int getPlaceHolderCounter();
+        int getPlaceHolderCounter(string line, string checkChar);
         bool isValid(string line, string checkChar);
         string replaceValues(string token, string line, string outputValue);
-        void deleteLine();
+        string deleteLine(string line, string token);
         void writeLine(string line);
         string getLine();
         bool close();
@@ -42,14 +42,14 @@ namespace DA59 {
         public string outputFilePath;
         public int placeHolderCounter;
 
-            public DA59() { } 
-            public DA59(string input, string output)
+        public DA59() { } 
+        public DA59(string input, string output)
             {
                 inputFile = new StreamReader(input);
                 outputFile = new StreamWriter(output);
             }
 
-            public bool setInputFile(string inputPath) {
+        public bool setInputFile(string inputPath) {
                 try
                 {
                     this.inputFile = new StreamReader(inputPath);
@@ -61,7 +61,7 @@ namespace DA59 {
                     return false;
                 }
             }
-            public bool setOutputFile(string outputPath)
+        public bool setOutputFile(string outputPath)
                 {
                 try
                 {
@@ -85,18 +85,20 @@ namespace DA59 {
             return outputFilePath;
         }
 
-        public int getPlaceHolderCounter()
+        public int getPlaceHolderCounter(string line, string checkChar)
         {
-            return placeHolderCounter; //this function should contain code not only for returning valu but also for updating it, so it should receive string parameter with line and regex
+            Regex tokenMark = new Regex(checkChar);
+            placeHolderCounter = tokenMark.Matches(line).Count;
+            return placeHolderCounter; 
         }
         
-            public bool isValid(string line, string checkChar)
+        public bool isValid(string line, string checkChar)
             {
                 Regex tokenMark = new Regex(checkChar);
 
                 if (tokenMark.IsMatch(line))
                 {
-                placeHolderCounter = tokenMark.Matches(line).Count;
+                
                     return true;
                 }
                 else
@@ -105,7 +107,7 @@ namespace DA59 {
                 }
             }
         
-            public string replaceValues(string token, string line, string outputValue)
+        public string replaceValues(string token, string line, string outputValue)
             {
 
                 placeHolder = new Regex(token);
@@ -114,19 +116,10 @@ namespace DA59 {
 
                 if (placeHolder.IsMatch(line))
                 {
-                    //if (token == "!GENREM")
-                    //{
-                        //line = deleteLine();
-                                          
-                    //}
-                    //else
-                    //{
-                        line = placeHolder.Replace(line, outputValue);
-                    //}
-
-                    //return true;
+                    line = placeHolder.Replace(line, outputValue);
+                  
                 }
-                //outputFile.WriteLine(line);
+                
                 return line;
             }
             catch (Exception)
@@ -135,11 +128,27 @@ namespace DA59 {
             }
             }
 
-            public void deleteLine()
+        public string deleteLine(string line, string token)
+        {
+            Regex regex = new Regex("({.*" + token + ".*?})");
+            Regex regexParagraph = new Regex(@"\\par\b");
+
+            if (regex.IsMatch(line))
             {
-                outputFile.WriteLine( @"{\rtlch\fcs1 \af1\afs20 \ltrch\fcs0 \f1\fs20\cf2 }");
-            
+                line = regex.Replace(line, "");
+                if (Regex.IsMatch(line, @"\\par}"))
+                {
+                    line = regexParagraph.Replace(line,"");
+                }
+
+                return line;
             }
+            else
+            {
+                return line;
+            }
+            
+        }
         
             public void writeLine(string line)
             {
@@ -187,6 +196,5 @@ namespace DA59 {
             }
         }
     }
-
 
 

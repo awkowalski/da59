@@ -12,6 +12,28 @@ namespace ConsoleApplication5
     {
         private static string line;
 
+        public static string deleteLine(string line, string token)
+        {
+            Regex regex = new Regex("({.*" + token + ".*?})");
+            Regex regexParagraph = new Regex(@"\\par\b");
+
+            if (regex.IsMatch(line))
+            {
+                line = regex.Replace(line, "");
+                if (Regex.IsMatch(line, @"\\par}"))
+                {
+                    line = regexParagraph.Replace(line,"");
+                }
+
+                return line;
+            }
+            else
+            {
+                return line;
+            }
+
+        }
+
         static void Main(string[] args)
         {
             string inputPath = @"D:\TFS\HE\test.rtf";
@@ -20,8 +42,8 @@ namespace ConsoleApplication5
             RTF_Handler my_rtf = new RTF_Handler(inputPath, outputPath);
 
 
-            Console.WriteLine(my_rtf.getInputFile());
-            Console.WriteLine(Regex.Matches("test, test, !test, !test", "!").Count);
+
+            Console.WriteLine(deleteLine(@"\par} {test} 2312", "test"));
             Console.ReadLine();
 
             //while ((line = my_rtf.getLine()) != null)
