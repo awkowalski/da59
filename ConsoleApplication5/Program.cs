@@ -38,10 +38,11 @@ namespace ConsoleApplication5
         {
             string inputPath = @"D:\TFS\HE\test.rtf";
             string outputPath = @"D:\TFS\HE\test_output.rtf";
+            string testTring;
         
             RTF_Handler my_rtf = new RTF_Handler(inputPath, outputPath);
 
-
+            testTring = my_rtf.getLine();
 
             Console.WriteLine(deleteLine(@"\par} {test} 2312", "test"));
             Console.ReadLine();
